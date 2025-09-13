@@ -1,7 +1,16 @@
 <?php
 
-test('hola mundo', function () {
-    $response = $this->get('/hola-mundo');
+/**
+ * @test
+ */
+test('can run isolated code', function () {
 
-    $response->assertStatus(200);
+    $response = $this->postJson('api/run-php', [
+        'code' => '<?php echo "Hola Mundo!";'
+    ]);
+    $response->assertStatus(200)
+        ->assertJson([
+            'status' => true,
+            'output' => 'Hola Mundo!'
+        ]);
 });
