@@ -1,48 +1,13 @@
 'use client';
 
 import CodeEditor from '@/components/editor/CodeEditor';
-import { ResultsPanel } from '@/components/editor/results-panel';
 import { VariablesPanel } from '@/components/editor/variables-panel';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Bug, Code2, Play, RotateCcw, Square, Terminal } from 'lucide-react';
+import { Bug, Play, RotateCcw, Square, Terminal } from 'lucide-react';
 import { useState } from 'react';
 
 export default function DebugIDE() {
-    const [code, setCode] = useState(`<?php
-function calculateSum($a, $b) {
-    try {
-        if (!is_numeric($a) || !is_numeric($b)) {
-            throw new Exception("Los argumentos deben ser números");
-        }
-        
-        $result = $a + $b;
-        echo "Calculando suma: $a + $b = $result\\n";
-        return $result;
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage() . "\\n";
-        return null;
-    }
-}
-
-function processArray($numbers) {
-    try {
-        $total = 0;
-        foreach ($numbers as $number) {
-            $total = calculateSum($total, $number);
-        }
-        return $total;
-    } catch (Exception $e) {
-        echo "Error procesando array: " . $e->getMessage() . "\\n";
-        return null;
-    }
-}
-
-// Función aislada para testing
-$testFunction = 'calculateSum';
-$testArgs = [15, 33];
-?>`);
-
     const [selectedFunction, setSelectedFunction] = useState('calculateSum');
     const [testArgs, setTestArgs] = useState('[15, 33]');
     const [isRunning, setIsRunning] = useState(false);
@@ -132,14 +97,6 @@ $testArgs = [15, 33];
                             <h2 className="text-lg font-semibold">Variables</h2>
                         </div>
                         <VariablesPanel variables={variables} />
-                    </div>
-
-                    <div className="flex-1 border-t border-gray-600 p-4">
-                        <div className="mb-3 flex items-center gap-2">
-                            <Code2 className="h-5 w-5 text-blue-400" />
-                            <h2 className="text-lg font-semibold">Console Output</h2>
-                        </div>
-                        <ResultsPanel logs={logs} />
                     </div>
 
                     {/* Function Selector */}

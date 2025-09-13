@@ -2,15 +2,32 @@
 
 import Editor from '@monaco-editor/react';
 import { useState } from 'react';
+import { ResultsPanel } from './results-panel';
 
 export default function CodeEditor() {
     const [code, setCode] = useState("<?php\necho 'Hola Mundo!';");
     const [output, setOutput] = useState('');
+    const [logs, setLogs] = useState<string[]>([]);
 
     const runCode = async () => {
-        const response = await fetch('/run-php');
-        const data = await response.json();
-        setOutput(data.output || data.error);
+        try {
+            const response = await fetch('/api/run-php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify({ code }), // 🔹 mandamos el código
+            });
+
+            console.log('Response status:', response.status);
+
+            const data = await response.json();
+            setLogs((prev) => [...prev, data.output || data.error || 'Sin salida']);
+            setOutput(data.output || data.error || 'Sin salida');
+        } catch (e) {
+            setOutput('Error al ejecutar el código');
+        }
     };
 
     return (
@@ -21,8 +38,8 @@ export default function CodeEditor() {
             <button onClick={runCode} className="bg-blue-600 p-2 text-white hover:bg-blue-700">
                 ▶ Run
             </button>
-            <div className="h-40 overflow-auto bg-black p-4 text-green-400">
-                <pre>{output}</pre>
+            <div className="h-80 overflow-auto bg-black p-4 text-green-400">
+                <ResultsPanel logs={output} />
             </div>
         </div>
     );
