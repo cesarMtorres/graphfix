@@ -1,6 +1,6 @@
 'use client';
 
-import { CodeEditor } from '@/components/editor/code-editor';
+import CodeEditor from '@/components/editor/CodeEditor';
 import { ResultsPanel } from '@/components/editor/results-panel';
 import { VariablesPanel } from '@/components/editor/variables-panel';
 import { Button } from '@/components/ui/button';
@@ -174,7 +174,8 @@ $testArgs = [15, 33];
                         </div>
 
                         <div className="flex-1 overflow-hidden">
-                            <CodeEditor code={code} onChange={setCode} selectedFunction={selectedFunction} />
+                            {/* <CodeEditor code={code} onChange={setCode} selectedFunction={selectedFunction} /> */}
+                            <CodeEditor />
                         </div>
                     </div>
                 </div>
