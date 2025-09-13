@@ -13,9 +13,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::prefix('api')->group(function () {
-    Route::post('/run-php', [CodeRunnerController::class, 'index'])->name('run-php');
-});
-
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
