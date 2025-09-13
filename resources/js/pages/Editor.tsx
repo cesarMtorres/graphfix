@@ -131,7 +131,6 @@ export default function DebugIDE() {
                         </div>
 
                         <div className="flex-1 overflow-hidden">
-                            {/* <CodeEditor code={code} onChange={setCode} selectedFunction={selectedFunction} /> */}
                             <CodeEditor />
                         </div>
                     </div>
