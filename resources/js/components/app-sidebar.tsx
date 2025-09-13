@@ -38,7 +38,9 @@ export function AppSidebar() {
                         <SidebarMenuButton size="lg" asChild>
                             <Link href={dashboard()} prefetch>
                                 <AppLogo />
+                                <span className="sr-only">Dashboard</span>
                             </Link>
+                            <Link href={hola()} className="block px-4 py-2 hover:bg-gray-200"></Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
