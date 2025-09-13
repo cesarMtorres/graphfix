@@ -103,7 +103,7 @@ $testArgs = [15, 33];
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-2">
                             <Bug className="h-6 w-6 text-blue-400" />
-                            <h1 className="text-xl font-bold">Debug IDE</h1>
+                            <h1 className="text-xl font-bold">GraphFix</h1>
                         </div>
                         <span className="rounded border border-blue-600 bg-blue-700 px-3 py-1 text-sm text-white">Función Aislada</span>
                     </div>
