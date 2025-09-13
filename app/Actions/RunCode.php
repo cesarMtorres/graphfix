@@ -10,20 +10,73 @@ final class RunCode
     {
         $status = 200;
         $output = '';
+        $errors = [];
+        $logs = [];
 
-        $sandbox = new PHPSandbox();
+        // Limpiar etiquetas PHP
+        $cleanCode = $this->cleanPhpTags($code);
+
+        $sandbox = new PHPSandbox;
+        $sandbox->error_level = E_ALL;
+        $sandbox->allow_classes = true;
+        $sandbox->allow_objects = true;
+        $sandbox->allow_functions = true;
+        $sandbox->allow_constants = true;
 
         try {
             ob_start();
+            $result = $sandbox->execute($cleanCode);
 
-            $sandbox->execute($code);
+            if ($result !== null) {
+                echo $result;
+            }
+
             $output = ob_get_clean();
-        } catch (\Exception $e) {
+        } catch (\ParseError $e) {
+            $status = 400;
+            $output = ob_get_clean();
 
+            $errors[] = [
+                'type' => 'Parse Error',
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => 'sandboxed code',
+                'trace' => $e->getTraceAsString(),
+            ];
+        } catch (\Throwable $e) {
             $status = 500;
-            $output = $e->getMessage();
+            $output = ob_get_clean();
+
+            $errors[] = [
+                'type' => get_class($e),
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => 'sandboxed code',
+                'trace' => $e->getTraceAsString(),
+            ];
         }
 
-        return compact('status', 'output');
+        return [
+            'status' => $status,
+            'output' => $output,
+            'errors' => $errors,
+            'logs' => $logs,
+            'success' => empty($errors),
+        ];
+    }
+
+    private function cleanPhpTags(string $code): string
+    {
+        // Remover etiquetas de apertura PHP
+        $code = preg_replace('/^\s*<\?php\s*/', '', $code);
+        $code = preg_replace('/^\s*<\?\s*/', '', $code);
+
+        // Remover etiquetas de cierre PHP
+        $code = preg_replace('/\s*\?>\s*$/', '', $code);
+
+        // Limpiar espacios extra
+        $code = trim($code);
+
+        return $code;
     }
 }

@@ -6,11 +6,11 @@
 test('can run isolated code', function () {
 
     $response = $this->postJson('api/run-php', [
-        'code' => '<?php echo "Hola Mundo!";'
+        'code' => '<?php echo "Hola Mundo!";',
     ]);
     $response->assertStatus(200)
         ->assertJson([
             'status' => true,
-            'output' => 'Hola Mundo!'
+            'output' => 'Hola Mundo!',
         ]);
 });
